@@ -29,8 +29,8 @@ public class CustomerController {
 	}
 	
 	@GetMapping(value = "/stream",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	public Flux<CustomerDTO> getCustomersStream(){
-		return customerService.getCustomers();
+	public Flux<?> getCustomersStream(){
+		return customerService.getCustomersStream();
 	}
 	
 	@PostMapping

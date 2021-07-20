@@ -1,8 +1,15 @@
 package com.pawan.reactive.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.time.Duration;
+import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.ReactiveMongoOperations;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import com.pawan.reactive.domain.Customer;
 import com.pawan.reactive.dto.CustomerDTO;
 import com.pawan.reactive.mapper.CustomerMapper;
 import com.pawan.reactive.repository.CustomerRepository;
@@ -16,11 +23,43 @@ public class CustomerService {
 
 	@Autowired
 	private CustomerRepository repository;
+	
+	@Autowired
+	private ReactiveMongoOperations mongoOperations;
 
 	public Flux<CustomerDTO> getCustomers() {
+		
 		return repository.findAll().map(CustomerMapper::toDTO);
 	}
+	
+	public Flux<?> getCustomersStream() {
+		
+		Flux<Long> interval = Flux.interval(Duration.ofSeconds(1));
+		Query query=new Query();
+		query.with(Sort.by(Sort.Direction.DESC, "customerId"));
+		
+	 
+		Mono<CustomerDTO> stream = mongoOperations.findOne(query, Customer.class).map(CustomerMapper::toDTO);
+	
+		
+		return interval.flatMap(i->stream).doOnNext(System.out::println);
+	}
 
+	
+	/*
+ public Flux<?> getCustomersStream() {
+		
+		Flux<Long> interval = Flux.interval(Duration.ofSeconds(1));
+		Query query=new Query();
+		query.with(Sort.by(Sort.Direction.DESC, "customerId"));
+		
+		Mono<CustomerDTO> stream = mongoOperations.findOne(query, Customer.class).map(CustomerMapper::toDTO);
+	
+		
+		return Flux.zip(Flux.fromStream(stream.flux().toStream()),interval,(key, value) -> key);
+	}*/
+ 
+ 
 	public Mono<CustomerDTO> getCustomer(Integer customerId) {
 		return repository.findById(customerId).map(CustomerMapper::toDTO);
 	}

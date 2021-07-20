@@ -6,4 +6,5 @@ import com.pawan.reactive.domain.Customer;
 
 public interface CustomerRepository extends ReactiveMongoRepository<Customer, Integer>{
 
+
 }
