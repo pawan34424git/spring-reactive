@@ -1,4 +1,4 @@
-package com.pawan.reactive.dao;
+package com.pawan.dummy.reactive.dao;
 
 import java.time.Duration;
 import java.util.List;

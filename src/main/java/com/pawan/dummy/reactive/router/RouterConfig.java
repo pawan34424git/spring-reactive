@@ -1,4 +1,4 @@
-package com.pawan.reactive.router;
+package com.pawan.dummy.reactive.router;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -7,7 +7,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import com.pawan.reactive.handler.CustomerHandler;
+import com.pawan.dummy.reactive.handler.CustomerHandler;
 
 @Configuration
 public class RouterConfig {
