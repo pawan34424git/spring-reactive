@@ -42,7 +42,7 @@ public class CustomerService {
 		Mono<CustomerDTO> stream = mongoOperations.findOne(query, Customer.class).map(CustomerMapper::toDTO);
 	
 		
-		return interval.flatMap(i->stream).doOnNext(System.out::println);
+		return interval.flatMap(i->stream).distinct().doOnNext(System.out::println);
 	}
 
 	
